@@ -55,6 +55,15 @@ class RequestError(Exception):
     def __str__(self):
         return repr(self.value)
 
+
+class DownloadURLEmptyError(Exception):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
 class SecurityCheckError(Exception):
     def __init__(self, value):
         self.value = value
@@ -551,7 +560,7 @@ class GooglePlayAPI(object):
         if response.commands.displayErrorMessage != "":
             raise RequestError(response.commands.displayErrorMessage)
         elif response.payload.deliveryResponse.appDeliveryData.downloadUrl == "":
-            raise RequestError('App not purchased')
+            raise DownloadURLEmptyError("Download URL Empty")
         else:
             result = {}
             result['docId'] = packageName
