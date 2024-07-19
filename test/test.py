@@ -1,7 +1,7 @@
-from gpapi.googleplay import GooglePlayAPI, RequestError
-
-import sys
 import os
+import sys
+
+from gpapi.googleplay import GooglePlayAPI, RequestError
 
 gsfId = int(os.environ["GPAPI_GSFID"])
 authSubToken = os.environ["GPAPI_TOKEN"]
@@ -13,12 +13,12 @@ print("\nLogin with ac2dm token and gsfId saved\n")
 server.login(None, None, gsfId, authSubToken)
 
 # SEARCH
-print("\nSearch suggestion for \"fir\"\n")
+print('\nSearch suggestion for "fir"\n')
 print(server.searchSuggest("fir"))
 
 result = server.search("firefox")
 for doc in result:
-    if 'docid' in doc:
+    if "docid" in doc:
         print("doc: {}".format(doc["docid"]))
     for cluster in doc["child"]:
         print("\tcluster: {}".format(cluster["docid"]))
@@ -66,9 +66,11 @@ print(details["title"])
 print("\nGetting reviews for %s\n" % testApps[0])
 revs = server.reviews(testApps[0])
 for r in revs:
-    print("UserId: {0} Vote: {1}".format(
-        r["userProfile"]["personIdString"],
-        str(r["starRating"])))
+    print(
+        "UserId: {0} Vote: {1}".format(
+            r["userProfile"]["personIdString"], str(r["starRating"])
+        )
+    )
 
 # BROWSE
 print("\nBrowse play store categories\n")
@@ -76,12 +78,14 @@ browse = server.browse()
 for c in browse.get("category"):
     print(c["name"])
 
-sampleCat = browse["category"][0]["unknownCategoryContainer"]["categoryIdContainer"]["categoryId"]
+sampleCat = browse["category"][0]["unknownCategoryContainer"]["categoryIdContainer"][
+    "categoryId"
+]
 print("\nBrowsing the {} category\n".format(sampleCat))
 browseCat = server.home(cat=sampleCat)
 
 for doc in browseCat:
-    if 'docid' in doc:
+    if "docid" in doc:
         print("doc: {}".format(doc["docid"]))
     for child in doc["child"]:
         print("\tsubcat: {}".format(child["docid"]))
@@ -96,8 +100,11 @@ for c in catList:
     print(c)
 
 limit = 4
-print("\nList only {} apps from subcat {} for {} category\n".format(
-    limit, catList[0], cat))
+print(
+    "\nList only {} apps from subcat {} for {} category\n".format(
+        limit, catList[0], cat
+    )
+)
 appList = server.list(cat, catList[0], 4, 1)
 for app in appList:
     print(app["docid"])
