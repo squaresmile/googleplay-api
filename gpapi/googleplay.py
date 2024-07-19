@@ -638,6 +638,23 @@ class GooglePlayAPI(object):
             return self.delivery(packageName, versionCode, offerType, dlToken,
                                  expansion_files=expansion_files)
 
+
+    def purchase(self, packageName, versionCode=None, offerType=1, expansion_files=False):
+        """Purchase an app, required before downloading"""
+        headers = self.getHeaders()
+        params = {'ot': str(offerType),
+                  'doc': packageName,
+                  'vc': str(versionCode)}
+        response = requests.post(PURCHASE_URL, headers=headers,
+                                 params=params, verify=ssl_verify,
+                                 timeout=60,
+                                 proxies=self.proxies_config)
+        response = googleplay_pb2.ResponseWrapper.FromString(response.content)
+        if response.commands.displayErrorMessage != "":
+            raise RequestError(response.commands.displayErrorMessage)
+        return response
+
+
     def log(self, docid):
         log_request = googleplay_pb2.LogRequest()
         log_request.downloadConfirmationQuery = "confirmFreeDownload?doc=" + docid
