@@ -6,7 +6,7 @@ authors = ["NoMore201 <domenico.iezzi.201@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.8"
 protobuf = "^5.27.2"
 cryptography = "^42.0.8"
 requests = "^2.32.3"
