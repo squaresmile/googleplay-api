@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from base64 import b64decode, urlsafe_b64encode
 from datetime import datetime
 
@@ -411,7 +409,7 @@ class GooglePlayAPI(object):
         packageName is the app unique ID (usually starting with 'com.')."""
         path = DETAILS_URL + "?doc={}".format(requests.utils.quote(packageName))
         data = self.executeRequestApi2(path)
-        return utils.parseProtobufObj(data.payload.detailsResponse.docV2)
+        return utils.parseProtobufObj(data.payload.detailsResponse.item)
 
     def bulkDetails(self, packageNames):
         """Get several apps details from a list of package names.
@@ -621,7 +619,9 @@ class GooglePlayAPI(object):
             cookies = {str(cookie.name): str(cookie.value)}
             result["file"] = self._deliver_data(downloadUrl, cookies)
 
-            for split in response.payload.deliveryResponse.appDeliveryData.split:
+            for (
+                split
+            ) in response.payload.deliveryResponse.appDeliveryData.splitDeliveryData:
                 a = {}
                 a["name"] = split.name
                 a["file"] = self._deliver_data(split.downloadUrl, None)
@@ -686,7 +686,7 @@ class GooglePlayAPI(object):
         if response.commands.displayErrorMessage != "":
             raise RequestError(response.commands.displayErrorMessage)
         else:
-            dlToken = response.payload.buyResponse.downloadToken
+            dlToken = response.payload.buyResponse.encodedDeliveryToken
             return self.delivery(
                 packageName,
                 versionCode,
