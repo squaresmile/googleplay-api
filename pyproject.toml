@@ -47,7 +47,7 @@ no_implicit_reexport = true
 strict_equality = true
 
 [tool.ruff]
-exclude = ["googleplay_api/GooglePlay_pb2.py"]
+exclude = ["googleplay_api/googleplay_pb2.py"]
 
 [tool.ruff.lint]
 select = [
